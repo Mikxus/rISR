@@ -144,6 +144,7 @@ risr_bind:
 
     ret
 
+
 /* Default isr */
 .global runtime_bad_isr
 runtime_bad_isr:
