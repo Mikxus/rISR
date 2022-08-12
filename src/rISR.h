@@ -132,17 +132,6 @@ typedef enum
  */
 extern void risr_bind( isr_vectors isr_name, void (*isr_func_ptr)(void) );
 
-__attribute__((always_inline)) inline void risr_clean( void )
-{
-    __asm__ (
-        "pop r30    \n\t"
-        "pop r31        "
-        :
-        :
-        : "r30", "r31"
-    );
-}
-
 #include "rISR.c"
 
 #ifdef __cplusplus
