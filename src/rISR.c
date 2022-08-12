@@ -10,12 +10,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        volatile void (*vect_ptr)(void) = isr_vector_table[INT0_];
+        (*isr_vector_table[INT0_])();
         __asm__(
-            "ijmp"
-            :
-            : "pQ"(vect_ptr)
-            : "memory");
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -25,8 +24,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[INT1_];
-        goto *vect_ptr;
+        (*isr_vector_table[INT1_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -36,8 +38,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[PCINT0_];
-        goto *vect_ptr;
+        (*isr_vector_table[PCINT0_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -47,8 +52,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[PCINT1_];
-        goto *vect_ptr;
+        (*isr_vector_table[PCINT1_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -58,8 +66,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[PCINT2_];
-        goto *vect_ptr;
+        (*isr_vector_table[PCINT2_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -69,8 +80,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[WDT_];
-        goto *vect_ptr;
+        (*isr_vector_table[WDT_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -80,8 +94,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER2_COMPA_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER2_COMPA_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -91,8 +108,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER2_COMPB_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER2_COMPB_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -102,8 +122,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER2_OVF_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER2_OVF_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -113,8 +136,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER1_CAPT_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER1_CAPT_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -124,8 +150,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER1_COMPA_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER1_COMPA_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -135,8 +164,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER1_COMPB_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER1_COMPB_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -146,8 +178,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER1_OVF_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER1_OVF_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -157,8 +192,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER0_COMPA_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER0_COMPA_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -168,8 +206,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER0_COMPB_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER0_COMPB_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -179,8 +220,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER1_OVF_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER1_OVF_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -190,8 +234,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[SPI_STC_];
-        goto *vect_ptr;
+        (*isr_vector_table[SPI_STC_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -201,8 +248,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[USART_RX_];
-        goto *vect_ptr;
+        (*isr_vector_table[USART_RX_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -212,8 +262,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[USART_UDRE_];
-        goto *vect_ptr;
+        (*isr_vector_table[USART_UDRE_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -223,8 +276,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TIMER1_COMPB_];
-        goto *vect_ptr;
+        (*isr_vector_table[TIMER1_COMPB_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -234,8 +290,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[ADC_];
-        goto *vect_ptr;
+        (*isr_vector_table[ADC_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -245,8 +304,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[EE_READY_];
-        goto *vect_ptr;
+        (*isr_vector_table[EE_READY_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -256,8 +318,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[ANALOG_COMP_];
-        goto *vect_ptr;
+        (*isr_vector_table[ANALOG_COMP_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -267,8 +332,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        void *vect_ptr = isr_vector_table[TWI_];
-        goto *vect_ptr;
+        (*isr_vector_table[TWI_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
@@ -278,8 +346,11 @@ extern "C"
         __asm__(
             "push r30   \n\t"
             "push r31       ");
-        volatile void (*vect_ptr) () = isr_vector_table[SPM_READY_];
-        goto *vect_ptr;
+        volatile void (*vect_ptr)() = isr_vector_table[SPM_READY_])();
+        __asm__(
+            "pop r31    \n\t"
+            "pop r30    \n\t"
+            "reti");
     }
 #endif
 
