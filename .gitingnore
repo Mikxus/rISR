@@ -2,3 +2,6 @@
 .vscode
 .history
 .gdb_history
+*.elf
+*.o
+*.out
