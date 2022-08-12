@@ -1,5 +1,5 @@
 #include "example_config.h"
-#include "/home/mikko/Documents/code/assembly/dynisr/src/rISR.h"    // your path to rISR.h
+#include <rISR.h>
 
 #define led_pin 13
 
