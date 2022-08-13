@@ -23,7 +23,7 @@
 //
 // #define TIMER1_CAPT_vect_used
 //
- #define TIMER1_COMPA_vect_used
+// #define TIMER1_COMPA_vect_used
 //
 // #define TIMER1_COMPB_vect_used
 //
