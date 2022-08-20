@@ -30,103 +30,103 @@
 
 /* Interrupt vector struct */
 isr_vector_table:
-    #ifdef INT0_vect_used
+    #if defined(INT0_used) || defined(INT0_unsafe)
     .word runtime_bad_isr
     #endif
 
-    #ifdef INT0_vect_used
+    #if defined(INT0_used) || defined(INT0_unsafe)
     .word runtime_bad_isr
     #endif
 
-    #ifdef PCINT0_vect_used
+    #if defined(PCINT0_used) || defined(PCINT1_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef PCINT1_vect_used
+    #if defined(PCINT1_used) || defined(PCINT1_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef PCINT2_vect_used
+    #if defined(PCINT2_used) || defined(PCINT2_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef WDT_vect_used
+    #if defined(WDT_used) || defined(WDT_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER2_COMPA_vect_used
+    #if defined(TIMER2_COMPA_used) || defined(TIMER2_COMP_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER2_COMPB_vect_used
+    #if defined(TIMER2_COMPB_used) || defined(TIMER2_COMPB_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER2_OVF_vect_used
+    #if defined(TIMER2_OVF_used) || defined(TIMER2_OVF_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER1_CAPT_vect_used
+    #if defined(TIMER1_CAPT_used) || defined(TIMER1_CAPT_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER1_COMPA_vect_used
+    #if defined(TIMER1_COMPA_used) || defined(TIMER1_COMPA_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER1_COMPB_vect_used
+    #if defined(TIMER1_COMPB_used) || defined(TIMER1_COMPB_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER1_OVF_vect_used
+    #if defined(TIMER1_OVF_used) || defined(TIMER1_OVF_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER0_COMPA_vect_used
+    #if defined(TIMER0_COMPA_used) || defined(TIMER0_COMPA_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER0_COMPB_vect_used
+    #if defined(TIMER0_COMPB_used) || defined(TIMER0_COMPB_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TIMER0_OVF_vect_used
+    #if defined(TIMER0_OVF_used) || defined(TIMER0_OVF_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef SPI_STC_vect_used
+    #if defined(SPI_STC_used) || defined(SPI_STC_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef USART_RX_vect_used
+    #if defined(USART_RX_used) || defined(USART_RX_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef USART_UDRE_vect_used
+    #if defined(USART_UDRE_used) || defined(USART_UDRE_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef USART_TX_vect_used
+    #if defined(USART_TX_used) || defined(USART_TX_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef ADC_vect_used
+    #if defined(ADC_used) || defined(ADC_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef EE_READY_vect_used
+    #if defined(EE_READY_used) || defined(EE_READY_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef ANALOG_COMP_vect_used
+    #if defined(ANALOG_COMP_used) || defined(ANALOG_COMP_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef TWI_vect_used
+    #if defined(TWI_used) || defined(TWI_unsafe)
     .word runtime_bad_isr
     #endif
     
-    #ifdef SPM_READY_vect_used
+    #if defined(SPM_READY_used) || defined(SPM_READY_unsafe)
     .word runtime_bad_isr
     #endif
 
