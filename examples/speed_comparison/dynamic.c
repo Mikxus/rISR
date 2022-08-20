@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#define TIMER1_COMPB_vect_used
+#define TIMER1_COMPB_used
 
 #include "../../src/rISR.h"
 #include <avr/io.h>
@@ -38,14 +38,14 @@ int main()
     TCCR1A = 0;                            // set entire TCCR1A register to 0
     TCCR1B = 0;                            // same for TCCR1B
     TCNT1  = 0;                            // initialize counter value to 0 
-    PRR &= ~( 1 << PRTIM1 );                // Enable timer1
+    PRR &= ~( 1 << PRTIM1 );               // Enable timer1
 
     OCR1A = 1;
     TCCR1B |= (1 << WGM12);                // turn on CTC mode
     TCCR1B |= (1 << CS10);                 // No prescaler
     TIMSK1 |= (1 << OCIE1B);               // Enable timer1  
 
-    DDRB = 0b00010000;                    // Set pin to output                    
+    DDRB = 0b00010000;                     // Set pin to output                    
 
     risr_bind(TIMER1_COMPB_, __vector_pin_blink);
     sei();
