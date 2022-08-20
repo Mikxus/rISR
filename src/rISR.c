@@ -27,356 +27,211 @@ extern "C"
 {
 #endif
 
+
+/**
+ * @brief  
+ * @note   
+ */
+#define dynamic_isr( isr_vect, isr_pos )    \
+    ISR( isr_vect, ISR_NAKED )              \
+    {                                       \
+    __asm__(                                \
+            "push r30   \n\t"               \
+            "push r31       ");             \
+        (*isr_vector_table[ isr_pos ])();   \
+        __asm__(                            \
+            "pop r31    \n\t"               \
+            "pop r30    \n\t"               \
+            "reti           ");             \
+    }                                   
+
+/**
+ * @brief   Fast dynamic interrupt.  
+ * @note    Before returning from the interrupt you need to pop 31 and r30, 
+ *          since they are pushed on the stack before your vector is executed. 
+ *          The order to pop musn't change.
+ * 
+ *          This interrupt should compile into the following asm.
+ * 
+ *          push r30
+ *          push r31
+ *          lds r30,  &isr_vector_table + isr_vect * 2
+ *          lds r31,  &isr_vector_table + isr_vect * 2 + 1
+ *          ijmp
+ * 
+ *  Performance:
+ *          Cycles: 8
+ *          Flash: 14 bytes
+ */
+#define unsafe_dynamic_isr( isr_vect, isr_pos )                     \
+    ISR( isr_vect, ISR_NAKED )                                      \
+    {                                                               \
+        __asm__(                                                    \
+        "push r30    \n\t"                                          \
+        "push r31        ");                                        \
+        volatile void (*ptr)(void) = isr_vector_table[ isr_pos ];   \
+        goto *ptr;                                                  \
+    }
+
+
+
 /* Dynamic interrupt routine for every isr */
-#ifdef INT0_vect_used
-    ISR(INT0_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[INT0_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(INT0_used)
+        unsafe_dynamic_isr( INT0_vect, INT0_ );
+    #elif defined(INT0_unsafe)
+        unsafe_dynamic_isr( INT0_vect, INT0_ )
 #endif
 
-#ifdef INT1_vect_used
-    ISR(INT1_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[INT1_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(INT1_used)
+        dynamic_isr( INT1_vect, INT1_ )
+    #elif defined(INT1_unsafe)
+        unsafe_dynamic_isr( INT1_vect, INT1_ )
 #endif
 
-#ifdef PCINT0_vect_used
-    ISR(PCINT0_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[PCINT0_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(PCINT0_used)
+        dynamic_isr( PCINT0_vect, PCINT0_ )
+    #elif defined(PCINT0_unsafe)
+        unsafe_dynamic_isr( PCINT0_vect, PCINT0_ )
 #endif
 
-#ifdef PCINT1_vect_used
-    ISR(PCINT1_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[PCINT1_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(PCINT1_used)
+    dynamic_isr( PCINT1_vect, PCINT1_ )
+    #elif defined(PCINT1_unsafe)
+        unsafe_dynamic_isr( PCINT1_vect, PCINT1_ )
 #endif
 
-#ifdef PCINT2_vect_used
-    ISR(PCINT2_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[PCINT2_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(PCINT2_used)
+        dynamic_isr( PCINT2_vect, PCINT2_ )
+    #elif defined(PCINT2_unsafe)
+        unsafe_dynamic_isr( PCINT2_vect, PCINT2_ )
 #endif
 
-#ifdef WDT_vect_used
-    ISR(WDT_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[WDT_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(WDT_used)
+        dynamic_isr( WDT_vect, WDT_ )
+    #elif defined(WDT_unsafe)
+        unsafe_dynamic_isr( WDT_vect, WDT_ )
 #endif
 
-#ifdef TIMER2_COMPA_vect_used
-    ISR(TIMER2_COMPA_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER2_COMPA_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER2_COMPA_used)
+        dynamic_isr( TIMER2_COMPA_vect, TIMER2_COMPA_ )
+    #elif defined(TIMER2_COMPA_unsafe)
+        unsafe_dynamic_isr( TIMER2_COMPA_vect, TIMER2_COMPA_ )
 #endif
 
-#ifdef TIMER2_COMPB_vect_used
-    ISR(TIMER2_COMPB_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER2_COMPB_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER2_COMPB_used)
+        dynamic_isr( TIMER2_COMPB_vect, TIMER2_COMPB_ )
+    #elif defined(TIMER2_COMPB_unsafe)
+        unsafe_dynamic_isr( TIMER2_COMPB_vect, TIMER2_COMPB_ )
 #endif
 
-#ifdef TIMER2_OVF_vect_used
-    ISR(TIMER2_OVF_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER2_OVF_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER2_OVF_used)
+        dynamic_isr( TIMER2_OVF_vect, TIMER2_OVF_ )
+    #elif defined(TIMER2_OVF_unsafe)
+        unsafe_dynamic_isr( TIMER2_COMPB_vect, TIMER2_COMPB_ )
 #endif
 
-#ifdef TIMER1_CAPT_vect_used
-    ISR(TIMER1_CAPT_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER1_CAPT_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER1_CAPT_used)
+        dynamic_isr( TIMER1_CAPT_vect, TIMER1_CAPT_)
+    #elif defined(TIMER1_CAPT_unsafe)
+        unsafe_dynamic_isr( TIMER1_CAPT_vect, TIMER1_CAPT_ )
 #endif
 
-#ifdef TIMER1_COMPA_vect_used
-    ISR(TIMER1_COMPA_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER1_COMPA_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER1_COMPA_used)
+        dynamic_isr( TIMER1_COMPA_vect, TIMER1_COMPA_ )
+    #elif defined(TIMER1_COMPA_unsafe)
+        unsafe_dynamic_isr( TIMER1_COMPA_vect, TIMER1_COMPA_ )
 #endif
 
-#ifdef TIMER1_COMPB_vect_used
-    ISR(TIMER1_COMPB_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER1_COMPB_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER1_COMPB_used)
+        dynamic_isr( TIMER1_COMPB_vect, TIMER1_COMPB_ )
+    #elif defined(TIMER1_COMPB_unsafe)
+        unsafe_dynamic_isr( TIMER1_COMPB_vect, TIMER1_COMPB_ )
 #endif
 
-#ifdef TIMER1_OVF_vect_used
-    ISR(TIMER1_OVF_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER1_OVF_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER1_OVF_used)
+        dynamic_isr( TIMER1_OVF_vect, TIMER1_OVF_)
+    #elif defined(TIMER1_OVF_unsafe)
+        unsafe_dynamic_isr( TIMER1_OVF_vect, TIMER1_OVF_ )
 #endif
 
-#ifdef TIMER0_COMPA_vect_used
-    ISR(TIMER0_COMPA_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER0_COMPA_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER0_COMPA_used)
+        dynamic_isr( TIMER0_COMPA_vect, TIMER0_COMPA_ )
+    #elif defined(TIMER0_COMPA_unsafe)
+        unsafe_dynamic_isr( TIMER0_COMPA_vect, TIMER0_COMPA_ )
 #endif
 
-#ifdef TIMER0_COMPB_vect_used
-    ISR(TIMER0_COMPB_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER0_COMPB_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER0_COMPB_used)
+        dynamic_isr( TIMER0_COMPB_vect, TIMER0_COMPB_ )
+    #elif defined(TIMER0_COMPB_unsafe)
+        unsafe_dynamic_isr( TIMER0_COMPB_vect, TIMER0_COMPB_ )
 #endif
 
-#ifdef TIMER0_OVF_vect_used
-    ISR(TIMER0_OVF_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER1_OVF_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TIMER0_OVF_used)
+        dynamic_isr( TIMER0_OVF_vect, TIMER0_OVF_ )
+    #elif defined(TIMER0_OVF_unsafe)
+        unsafe_dynamic_isr( TIMER0_OVF_vect, TIMER0_OVF_ ) 
 #endif
 
-#ifdef SPI_STC_vect_used
-    ISR(SPI_STC_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[SPI_STC_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(SPI_STC_used)
+        dynamic_isr( SPI_STC_vect, SPI_STC_ )
+    #elif defined(SPI_STC_unsafe)
+        unsafe_dynamic_isr( SPI_STC_vect, SPI_STC_ )
 #endif
 
-#ifdef USART_RX_vect_used
-    ISR(USART_RX_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[USART_RX_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(USART_RX_used)
+        dynamic_isr( USART_RX_vect, USART_RX_ )
+    #elif defined(USART_RX_unsafe)
+        unsafe_dynamic_isr( USART_RX_vect, USART_RX_ )
 #endif
 
-#ifdef USART_UDRE_vect_used
-    ISR(USART_UDRE_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[USART_UDRE_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(USART_UDRE_used)
+        dynamic_isr( USART_UDRE_vect, USART_UDRE_ )
+    #elif defined(USART_UDRE_unsafe)
+        unsafe_dynamic_isr( USART_UDRE_vect, USART_UDRE_ )
 #endif
 
-#ifdef USART_TX_vect_used
-    ISR(USART_TX_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TIMER1_COMPB_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(USART_TX_used)
+        dynamic_isr( USART_TX_vect, USART_TX_ )
+    #elif defined(USART_TX_unsafe)
+        unsafe_dynamic_isr( USART_TX_vect, USART_TX_ )
 #endif
 
-#ifdef ADC_vect_used
-    ISR(ADC_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[ADC_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(ADC_used)
+        dynamic_isr( ADC_vect, ADC_ )
+    #elif defined(ADC_unsafe)
+        unsafe_dynamic_isr( ADC_vect, ADC_ )
 #endif
 
-#ifdef EE_READY_vect_used
-    ISR(EE_READY_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[EE_READY_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(EE_READY_used)
+        dynamic_isr( EE_READY_vect, EE_READY_ )
+    #elif defined(EE_READY_unsafe)
+        unsafe_dynamic_isr( EE_READY_vect, EE_READY_ )
 #endif
 
-#ifdef ANALOG_COMP_vect_used
-    ISR(ANALOG_COMP_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[ANALOG_COMP_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(ANALOG_COMP_used)
+        dynamic_isr( ANALOG_COMP_vect, ANALOG_COMP_ )
+    #elif defined(ANALOG_COMP_unsafe)
+        unsafe_dynamic_isr( ANALOG_COMP_vect, ANALOG_COMP_)
 #endif
 
-#ifdef TWI_vect_used
-    ISR(TWI_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        (*isr_vector_table[TWI_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(TWI_used)
+        dynamic_isr( TWI_vect, TWI_ )
+    #elif defined(TWI_unsafe)
+        unsafe_dynamic_isr( TWI_vect, TWI_ )
 #endif
 
-#ifdef SPM_READY_vect_used
-    ISR(SPM_READY_vect, ISR_NAKED)
-    {
-        __asm__(
-            "push r30   \n\t"
-            "push r31       ");
-        volatile void (*vect_ptr)() = isr_vector_table[SPM_READY_])();
-        __asm__(
-            "pop r31    \n\t"
-            "pop r30    \n\t"
-            "reti");
-    }
+#if defined(SPM_READY_used)
+        dynamic_isr( SPM_READY_vect, SPM_READY_ )
+    #elif defined(SPM_READY_unsafe)
+        unsafe_dynamic_isr( SPM_READY_vect, SPM_READY_ )
 #endif
+
+
+void risr_unbind( isr_vectors isr_name )
+{
+    isr_vector_table[ isr_name ] = &runtime_bad_isr;
+}
+
 
 #ifdef __cplusplus
 };
