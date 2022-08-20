@@ -1,11 +1,11 @@
-#include "example_config.h"
+#define TIMER1_COMPA_used
 #include <rISR.h>
 
 #define led_pin 13
 
 volatile bool pin_state = 0;
 
-__attribute__ ((interrupt)) void __vector_example() 
+__attribute__ ((signal)) void __vector_example() 
 {  
   pin_state ^= 1;
   digitalWrite( led_pin, pin_state );
@@ -20,6 +20,7 @@ void setup () {
 void loop () {
   cli();
   risr_bind( TIMER1_COMPA_, __vector_example );
+  sei();
 
   while (true);
 }
