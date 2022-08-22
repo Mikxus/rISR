@@ -59,10 +59,10 @@ ISR( TIMER1_COMPB_vect, ISR_NAKED )
         "in     r18, %[portb] \n\t"
         "eor    r18, r19      \n\t"
         "out    %[portb], r18 \n\t"
-        "pop r19              \n\t"
-        "pop r18              \n\t"
-        "out %[sreg], r18     \n\t"
-        "pop r18              \n\t"
+        "pop    r19           \n\t"
+        "pop    r18           \n\t"
+        "out    %[sreg], r18  \n\t"
+        "pop    r18           \n\t"
         "reti                     "
         :
         : [sreg] "I" (_SFR_IO_ADDR(SREG)),
