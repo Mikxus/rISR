@@ -24,7 +24,7 @@ void setup () {
 
 void loop () {
 
-  Cli();
+  cli();
   /* Sets timer1 to interrupt at the rate of ~ 16 mhz / 150 + interrupt execution time */
   TCCR1A = 0;                            // set entire TCCR1A register to 0
   TCCR1B = 0;                            // same for TCCR1B
