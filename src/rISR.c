@@ -76,8 +76,6 @@ extern "C"
         goto *ptr;                                                  \
     }
 
-#define TIMER1_COMPB_used
-
 /* Dynamic interrupt routine for every isr */
 #if defined(INT0_used)
         unsafe_dynamic_isr( INT0_vect, INT0_ );
