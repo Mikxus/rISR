@@ -24,6 +24,9 @@
 
 #include <avr/io.h>
 
+#ifdef ARDUINO
+#include "config.h"
+#endif
 
 .section .data
 .global isr_vector_table

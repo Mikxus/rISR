@@ -28,11 +28,15 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#ifdef ARDUINO
+#include "config.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif 
 
-extern void runtime_bad_isr(void);
+extern volatile void runtime_bad_isr(void);
 extern volatile void (*isr_vector_table[])(void) ;
 
 
@@ -192,9 +196,13 @@ extern void risr_bind( isr_vectors isr_name, void (*isr_func_ptr)(void) );
  */
 void risr_unbind( isr_vectors isr_name );
 
+
+#ifndef ARDUINO         // Idk doesn't compile if included in arduino ide...
+    #include "rISR.c"
+#endif
+
 #ifdef __cplusplus
 };
 #endif 
 
-#include "rISR.c"
 #endif

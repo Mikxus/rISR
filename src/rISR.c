@@ -21,24 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+//#ifdef arduino
+#ifndef _RISR_H_         // Arduino IDE won't compile without this.
+    #include "rISR.h"
+#endif
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-
 /**
  * @brief  
  * @note   
  */
-#define dynamic_isr( isr_vect, isr_pos )    \
+#define dynamic_isr( isr_vect, isr_offset ) \
     ISR( isr_vect, ISR_NAKED )              \
     {                                       \
     __asm__(                                \
             "push r30   \n\t"               \
             "push r31       ");             \
-        (*isr_vector_table[ isr_pos ])();   \
+        (*isr_vector_table[ isr_offset ])();\
         __asm__(                            \
             "pop r31    \n\t"               \
             "pop r30    \n\t"               \
@@ -63,17 +66,17 @@ extern "C"
  *          Cycles: 8
  *          Flash: 14 bytes
  */
-#define unsafe_dynamic_isr( isr_vect, isr_pos )                     \
+#define unsafe_dynamic_isr( isr_vect, isr_offset )                  \
     ISR( isr_vect, ISR_NAKED )                                      \
     {                                                               \
         __asm__(                                                    \
         "push r30    \n\t"                                          \
         "push r31        ");                                        \
-        volatile void (*ptr)(void) = isr_vector_table[ isr_pos ];   \
+        volatile void (*ptr)(void) = isr_vector_table[ isr_offset ];\
         goto *ptr;                                                  \
     }
 
-
+#define TIMER1_COMPB_used
 
 /* Dynamic interrupt routine for every isr */
 #if defined(INT0_used)
