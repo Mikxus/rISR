@@ -32,20 +32,46 @@ extern "C"
 #endif
 
 /**
- * @brief  
+ * @brief Dynamic interrupt
  * @note   
+ *  
+ *  Performance:
+ *          Cycles: 19
+ *              Before user interrupt: 11
+ *              After user interrupt: 8
+ *          Flash: 22
+ *          Stack: 4 bytes
+ * 
+ *          This interrupt should be compiled in to the following asm:
+ *          
+ *           push	r30
+ *           push	r31
+ *           lds	r30, &isr_vector_table + isr_vect * 2
+ *           lds	r31, &isr_vector_table + isr_vect * 2 + 1
+ *           icall
+ *           pop	r31
+ *           pop	r30
+ *           reti
  */
-#define dynamic_isr( isr_vect, isr_offset ) \
-    ISR( isr_vect, ISR_NAKED )              \
-    {                                       \
-    __asm__(                                \
-            "push r30   \n\t"               \
-            "push r31       ");             \
-        (*isr_vector_table[ isr_offset ])();\
-        __asm__(                            \
-            "pop r31    \n\t"               \
-            "pop r30    \n\t"               \
-            "reti           ");             \
+#define dynamic_isr( isr_vect, isr_offset )         \
+    ISR( isr_vect, ISR_NAKED )                      \
+    {                                               \
+        __asm__(                                    \
+            "push r30   \n\t"                       \
+            "push r31       "                       \
+            :                                       \
+            :                                       \
+            : "memory");                            \
+        register void (*user_isr)(void) asm("r30"); \
+        user_isr =  isr_vector_table[ isr_offset];  \
+        __asm__(                                    \
+            "icall      \n\t"                       \
+            "pop r31    \n\t"                       \
+            "pop r30    \n\t"                       \
+            "reti           "                       \
+            :                                       \
+            :  "r" (user_isr)                       \
+            : "memory");                            \
     }                                   
 
 /**
@@ -55,6 +81,7 @@ extern "C"
  *          The order to pop musn't change.
  * 
  *          This interrupt should compile into the following asm.
+ *          Tested on avr-gcc 12.2.0
  * 
  *          push r30
  *          push r31
@@ -65,13 +92,17 @@ extern "C"
  *  Performance:
  *          Cycles: 8
  *          Flash: 14 bytes
+ *          Stack: 2 bytes
  */
 #define unsafe_dynamic_isr( isr_vect, isr_offset )                  \
     ISR( isr_vect, ISR_NAKED )                                      \
     {                                                               \
         __asm__(                                                    \
         "push r30    \n\t"                                          \
-        "push r31        ");                                        \
+        "push r31        "                                          \
+        :                                                           \
+        :                                                           \
+        : "memory");                                                \
         volatile void (*ptr)(void) = isr_vector_table[ isr_offset ];\
         goto *ptr;                                                  \
     }
