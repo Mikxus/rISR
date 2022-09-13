@@ -33,7 +33,7 @@ extern "C"
 
 /**
  * @brief Dynamic interrupt
- * @note   
+ * @note
  *  
  *  Performance:
  *          Cycles: 19
