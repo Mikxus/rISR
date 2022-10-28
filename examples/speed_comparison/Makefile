@@ -1,0 +1,29 @@
+# 'make'        build executable file 'mycc'
+# 'make clean'  removes build directory
+
+
+CC = avr-gcc
+
+# compiler flags
+CFLAGS = -Wall -g -O3 --param=min-pagesize=0
+BOARD = atmega328p
+INCLUDES = ../../src/rISR.S
+BUILD_DIR = build
+
+
+# define the C source files
+EXAMPLES = dynamic.c fast_dynamic.c hard_coded.c
+
+.PHONY: clean
+
+all: $(EXAMPLES) $(BUILD_DIR)
+	@echo  Speed comparisons compiled
+
+$(EXAMPLES): $(BUILD_DIR)
+	$(CC) -mmcu=$(BOARD) $(CFLAGS) $(INCLUDES) $(@) -o $(BUILD_DIR)/$@
+
+$(BUILD_DIR):
+	@mkdir $(BUILD_DIR)
+
+clean:
+	rm -rf $(BUILD_DIR)
