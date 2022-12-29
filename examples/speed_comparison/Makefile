@@ -5,6 +5,9 @@
 CC = avr-gcc
 
 # compiler flags
+# if avr-gcc version is < 12x
+# remove the --param=min-pagesize=0
+# https://gcc.gnu.org/bugzilla//show_bug.cgi?id=105523
 CFLAGS = -Wall -g -O3 --param=min-pagesize=0
 BOARD = atmega328p
 INCLUDES = ../../src/rISR.S
