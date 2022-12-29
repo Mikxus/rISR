@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//#ifdef arduino
-#ifndef _RISR_H_         // Arduino IDE won't compile without this.
-    #include "rISR.h"
-#endif
+#include "rISR.h"
 
 #ifdef __cplusplus
 extern "C"
