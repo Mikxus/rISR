@@ -23,7 +23,7 @@
 //
 // #define TIMER1_COMPA_used
 //
-// #define TIMER1_COMPB_used
+#define TIMER1_COMPB_used
 //
 // #define TIMER1_OVF_used
 //
@@ -104,3 +104,56 @@
 // #define TWI_unsafe
 //
 // #define SPM_READY_unsafe 
+
+
+/* Custom struct struct to pass data to / from isr */
+
+// #define INT0_struct
+//
+// #define INT1_struct
+//
+// #define PCINT0_struct
+//
+// #define PCINT1_struct
+//
+// #define PCINT2_struct
+//
+// #define WDT_struct
+//
+// #define TIMER2_COMPA_struct
+//
+// #define TIMER2_COMPB_struct
+//
+// #define TIMER2_OVF_struct
+//
+// #define TIMER1_CAPT_struct
+//
+// #define TIMER1_COMPA_struct
+//
+#define TIMER1_COMPB_struct
+//
+// #define TIMER1_OVF_struct
+//
+// #define TIMER0_COMPA_struct
+//
+// #define TIMER0_COMPB_struct
+//
+// #define TIMER0_OVF_struct
+//
+// #define SPI_STC_struct
+//
+// #define USART_RX_struct
+//
+// #define USART_UDRE_struct
+//
+// #define USART_TX_struct
+//
+// #define ADC_struct
+//
+// #define EE_READY_struct
+//
+// #define ANALOG_COMP_struct
+//
+// #define TWI_struct
+//
+// #define SPM_READY_struct 
