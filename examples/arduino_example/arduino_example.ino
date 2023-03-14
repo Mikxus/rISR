@@ -36,7 +36,7 @@ void loop () {
   TCCR1B |= (1 << CS10);                 // No prescaler
   TIMSK1 |= (1 << OCIE1B);               // Enable timer1  
   
-  risr_bind( TIMER1_COMPB_, __vector_example );
+  bind_isr( TIMER1_COMPB_, __vector_example );
   sei();
 
   while (true);
