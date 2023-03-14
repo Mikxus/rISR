@@ -22,8 +22,7 @@
  * SOFTWARE.
  */
 
-#define TIMER1_COMPB_unsafe
-
+#include "fast_dynamic_config.h"
 #include "../../src/rISR.h"
 #include <avr/io.h>
 #include <stdbool.h>
@@ -47,7 +46,7 @@ int main()
 
     DDRB = 0b00010000;                     // Set pin to output                    
 
-    risr_bind(TIMER1_COMPB_, __vector_pin_blink);
+    bind_isr(TIMER1_COMPB_, __vector_pin_blink);
     sei();
 
     while (true){};
