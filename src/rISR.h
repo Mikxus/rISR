@@ -24,6 +24,7 @@
 #ifndef _RISR_H_
 #define _RISR_H_
 
+#include <stddef.h>
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -33,9 +34,39 @@
 extern "C" {
 #endif 
 
+/**
+ * @brief void function pointer to interrupt vector
+ * 
+ */
+typedef void (*vector_t)(void);
+
+/**
+ * @brief ISR for bad interrupts
+ * 
+ * @return vector_t 
+ */
 extern void runtime_bad_isr(void);
+
+/**
+ * @brief an array of function pointers that hold the adresses of dynamic ISRs
+ * 
+ */
 extern void (*isr_vector_table[])(void);
 
+/**
+ * @brief an array of void* pointers that hold pointers to different data if binded & enabled
+ *
+ */
+extern void *isr_vector_data_pointer_table[];
+
+
+#if ENABLE_ISR_VECTOR_TABLE_SIZE == 1
+    extern const uint8_t isr_vector_table_size;
+#endif
+
+#if ENABLE_ISR_VECTOR_DATA_TABLE_SIZE == 1
+    extern const uint8_t isr_vector_data_table_size;
+#endif
 
 /**
  * @brief  List of interrupt vectors.
@@ -179,11 +210,11 @@ typedef enum
 /**
  * @brief  Binds function pointer to selected isr
  * @note
- * @param  isr_name:        Name of the isr
- * @param  (*isr_func_ptr):   Function pointer to be binded
+ * @param  isr_name:       Name of the isr
+ * @param  isr_func_ptr:   Function pointer to be binded
  * @retval None
  */
-extern void risr_bind( isr_vectors isr_name, void (*isr_func_ptr)(void) );
+extern void bind_isr( isr_vectors isr_name, vector_t isr_func_ptr );
 
 /**
  * @brief  Unbinds the selected isr vector
@@ -191,12 +222,28 @@ extern void risr_bind( isr_vectors isr_name, void (*isr_func_ptr)(void) );
  * @param  isr_name: 
  * @retval None
  */
-void risr_unbind( isr_vectors isr_name );
+extern void unbind_isr( isr_vectors isr_name );
+
+/**
+ * @brief Binds pointer to data thingy
+ * 
+ * @param isr_name 
+ * @param pointer 
+ */
+extern void bind_isr_data_ptr( isr_vectors isr_name, void *pointer );
+
+extern void unbind_isr_data_ptr( isr_vectors isr_name );
 
 
-//ifndef ARDUINO         // Idk doesn't compile if included in arduino ide...
-//    #include "rISR.c"
-//#endif
+/**
+ * @brief Returns pointer to isr if the vector is used. Otherwise null.
+ * 
+ * @param isr_name
+ * @return vector_t 
+ */
+extern vector_t get_isr_vector( isr_vectors isr_name );
+
+extern void *get_isr_data_ptr( isr_vectors isr_name );
 
 #ifdef __cplusplus
 };
