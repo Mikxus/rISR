@@ -36,11 +36,12 @@ extern "C"
  *          Cycles: 19
  *              Before user interrupt: 11
  *              After user interrupt: 8
- *          Flash: 22
+ *          Flash: 22 bytes
  *          Stack: 4 bytes
  * 
- *          This interrupt should be compiled in to the following asm:
- *          
+ *          This interrupt should compile in to the following asm:
+ *          Tested on avr-gcc 12.2.0 using -O3 optimization
+ * 
  *           push	r30
  *           push	r31
  *           lds	r30, &isr_vector_table + isr_vect * 2
@@ -78,7 +79,7 @@ extern "C"
  *          The order to pop musn't change.
  * 
  *          This interrupt should compile into the following asm.
- *          Tested on avr-gcc 12.2.0
+ *          Tested on avr-gcc 12.2.0 using -O3 optimization
  * 
  *          push r30
  *          push r31
@@ -144,7 +145,7 @@ extern "C"
 #if defined(TIMER2_COMPA_used)
         dynamic_isr( TIMER2_COMPA_vect, TIMER2_COMPA_ )
     #elif defined(TIMER2_COMPA_unsafe)
-        unsafe_dynamic_isr( TIMER2_COMPA_vect, TIMER2_COMPA_ )
+        unsafe_dynamic_isr( TIMER2_COMPA_vect, TIMER2_COMPA_ ) 
 #endif
 
 #if defined(TIMER2_COMPB_used)
@@ -255,12 +256,45 @@ extern "C"
         unsafe_dynamic_isr( SPM_READY_vect, SPM_READY_ )
 #endif
 
-
-void risr_unbind( isr_vectors isr_name )
+__attribute__ ((signal)) runtime_bad_isr( void )
 {
-    isr_vector_table[ isr_name ] = &runtime_bad_isr;
+    return;
 }
 
+
+void bind_isr( isr_vectors isr_name, vector_t vector )
+{
+    isr_vector_table[ isr_name ] = vector;
+    return;
+}
+
+void unbind_isr( isr_vectors isr_name )
+{
+    isr_vector_table[ isr_name ] = runtime_bad_isr;
+    return;
+}
+
+void bind_isr_data_ptr( isr_vectors isr_name, void *pointer )
+{
+    isr_vector_data_pointer_table[ isr_name ] = pointer;
+    return;
+}
+
+void unbind_isr_data_ptr( isr_vectors isr_name )
+{
+    isr_vector_data_pointer_table[ isr_name ] = NULL;
+    return;
+}
+
+vector_t get_isr_vector( isr_vectors isr_name )
+{
+    return isr_vector_table[ isr_name ];
+}
+
+void *get_isr_data_ptr( isr_vectors isr_name )
+{
+    return isr_vector_data_pointer_table[ isr_name ];
+}
 
 #ifdef __cplusplus
 };
