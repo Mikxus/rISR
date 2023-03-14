@@ -1,0 +1,2 @@
+#define TIMER1_COMPB_used
+#define TIMER1_COMPB_data
