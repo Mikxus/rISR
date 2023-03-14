@@ -46,8 +46,7 @@ int main()
     while (true){};
 }
 
-
- /* Hardcoded interrupt routine to test speed difference over runtime binding */ 
+ /* Hardcoded interrupt routine to test speed difference over rISR */ 
 ISR( TIMER1_COMPB_vect, ISR_NAKED )
 {
     __asm__ (
