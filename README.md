@@ -1,4 +1,4 @@
-# rISR version 0.2.4
+# rISR version 1.0.0
 
 rISR (Runtime Interrupt Service Routine) is a C library that allows you to bind interrupt vectors at runtime on the atmega328p chip. It is designed to be easy to use and provides a simple API for binding and un-binding ISRs (Interrupt Service Routines) to interrupt vectors.
 
@@ -33,14 +33,15 @@ Or If you're using Arduino, you can also install the library by following these 
 5. Select the downloaded .zip file and click open
 6. The library should now be installed and ready to use in the Arduino IDE.
 
-### Example
+### Example project
 Next create new main.c or a sketch and copy over the example.
 ```C
-#include "rISR.h"
+#include <rISR.h>
 
 __attribute__ ((signal)) void __vector_pin_blink()
 {
     PORTB ^= 0b00010000;
+    return;
 }
 
 int main() {
@@ -57,7 +58,7 @@ int main() {
     TIMSK1 |= (1 << OCIE1B;
 
     /* Bind isr to selected interrupt vector */
-    risr_bind(TIMER1_COMPB_, __vector_pin_blink);
+    bind_isr(TIMER1_COMPB_, __vector_pin_blink);
     sei();
 
     while (true){};
@@ -65,15 +66,61 @@ int main() {
 ```
 **Note** if you're using arduino. Change the ```int main()``` to ```void loop()```
 
+Then new create config.h file or edit rISR's config file. The config file should have the interrupt name uncommented to enable runtime binding for it.
+```C
+#define TIMER1_COMPB_
+```
+
+#### Compilation
+- The library consists of header file, c file and a assembly file. These files need to have the interrupt definition config file included. To do this you'll need to add ```-include path/to/config.h``` to avr-gcc's input.
+
+#### Example makefile
+Create new Makefile and copy the following content to it, while replacing "path_to_" with the path to the rISR src folder.
+
+```Makefile
+CC := avr-gcc
+CFLAGS := -Wall --param=min-pagesize=0
+BOARD := atmega328p
+BUILD_DIR := build
+
+.phony: clean
+
+main.c: $(BUILD_DIR)
+    $(CC) -mmcu=$(BOARD) $(CFLAGS) -include config.h path_to_rISR.c path_to_rISR.S -o $(BUILD_DIR)/main.o
+
+$(BUILD_DIR):
+    mkdir $(BUILD_DIR)
+
+clean:
+    rm -rf $(BUILD_DIR)
+```
+
+To build the example you can just run ```make```
+
 ## API reference
 Bind an ISR to an interrupt vector.
 ```C
-risr_bind(enum isr_vectors vector, vector_t isr);
+void bind_isr(enum isr_vectors vector, vector_t isr);
 ```
 
 Un-bind an ISR from an interrupt vector.
 ```C
-risr_unbind(enum isr_vectors vector);
+void unbind_isr(enum isr_vectors vector);
+```
+
+Bind data pointer to interrupt vector.
+```C
+void bind_isr_data_ptr(enum isr_vectors vector, void* pointer);
+```
+
+Unbind data pointer from a interrupt vector
+```C
+void unbind_isr_data_otr(enum isr_vectors vector, void* pointer);
+```
+
+Get binded data pointer
+```C
+void *get_isr_data_ptr(enum isr_vectors vector);
 ```
 
 ## License
