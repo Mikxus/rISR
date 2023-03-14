@@ -1,3 +1,8 @@
+/* Wether to expose isr_table_lenght variable */
+#define ENABLE_ISR_VECTOR_TABLE_LENGHT 1
+
+#define ENABLE_ISR_VECTOR_DATA_POINTER_TABLE_SIZE 1
+
 /* Config file to select wich interrupt vectors are binded at runtime */
 /* Uncomment to enable runtime binding for the interrupt */
 
@@ -23,7 +28,7 @@
 //
 // #define TIMER1_COMPA_used
 //
-#define TIMER1_COMPB_used
+// #define TIMER1_COMPB_used
 //
 // #define TIMER1_OVF_used
 //
@@ -106,54 +111,54 @@
 // #define SPM_READY_unsafe 
 
 
-/* Custom struct struct to pass data to / from isr */
+/* Enables custom data ptr to be binded */
 
-// #define INT0_struct
+// #define INT0_data
 //
-// #define INT1_struct
+// #define INT1_data
 //
-// #define PCINT0_struct
+// #define PCINT0_data
 //
-// #define PCINT1_struct
+// #define PCINT1_data
 //
-// #define PCINT2_struct
+// #define PCINT2_data
 //
-// #define WDT_struct
+// #define WDT_data
 //
-// #define TIMER2_COMPA_struct
+// #define TIMER2_COMPA_data
 //
-// #define TIMER2_COMPB_struct
+// #define TIMER2_COMPB_data
 //
-// #define TIMER2_OVF_struct
+// #define TIMER2_OVF_data
 //
-// #define TIMER1_CAPT_struct
+// #define TIMER1_CAPT_data
 //
-// #define TIMER1_COMPA_struct
+// #define TIMER1_COMPA_data
 //
-#define TIMER1_COMPB_struct
+// #define TIMER1_COMPB_data
 //
-// #define TIMER1_OVF_struct
+// #define TIMER1_OVF_data
 //
-// #define TIMER0_COMPA_struct
+// #define TIMER0_COMPA_data
 //
-// #define TIMER0_COMPB_struct
+// #define TIMER0_COMPB_data
 //
-// #define TIMER0_OVF_struct
+// #define TIMER0_OVF_data
 //
-// #define SPI_STC_struct
+// #define SPI_STC_data
 //
-// #define USART_RX_struct
+// #define USART_RX_data
 //
-// #define USART_UDRE_struct
+// #define USART_UDRE_data
 //
-// #define USART_TX_struct
+// #define USART_TX_data
 //
-// #define ADC_struct
+// #define ADC_data
 //
-// #define EE_READY_struct
+// #define EE_READY_data
 //
-// #define ANALOG_COMP_struct
+// #define ANALOG_COMP_data
 //
-// #define TWI_struct
+// #define TWI_data
 //
-// #define SPM_READY_struct 
+// #define SPM_READY_data 
