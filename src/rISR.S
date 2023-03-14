@@ -21,17 +21,15 @@
  ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  ; SOFTWARE.
  */
-
 #include <avr/io.h>
-
-#ifdef ARDUINO
 #include "config.h"
-#endif
+
+.extern runtime_bad_isr
 
 .section .data
 .global isr_vector_table
 
-/* Interrupt vector struct */
+/* Interrupt vector table */
 isr_vector_table:
     #if defined(INT0_used) || defined(INT0_unsafe)
     .word runtime_bad_isr
@@ -133,48 +131,122 @@ isr_vector_table:
     .word runtime_bad_isr
     #endif
 
-/*  Uncomment if you need to know the size of the table */
- ;
- ;    #define table_lenght . - isr_vector_table
- ;    
- ; .global isr_vector_table_size
- ; isr_vector_table_size:
- ;   .byte table_lenght
+#if ENABLE_ISR_VECTOR_TABLE_SIZE == 1
+    #define isr_table_lenght . - isr_vector_table
+    .global isr_vector_table_size
+    isr_vector_table_size:
+    .byte isr_table_lenght
+#endif
 
+/* table which holds the isr's data pointers */
+.global isr_vector_data_pointer_table
+isr_vector_data_pointer_table:
+    #if defined(INT0_data)
+    .word 0x0000
+    #endif
 
+    #if defined(INT0_data)
+    .word 0x0000 
+    #endif
 
-/*
- * @args isr_vectors isr_name, void *isr_func_ptr
- *
- * isr_func_ptr:
- *      r22: low byte
- *      r23: high byte
- *  
- * isr_name:
- *      r24: byte
- *      r25: unused
- *
- */
-.section .text
-.global risr_bind
-risr_bind:
-    lsl r24
+    #if defined(PCINT_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(PCINT1_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(PCINT2_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(WDT_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER2_COMPA_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER2_COMPB_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER2_OVF_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER1_CAPT_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER1_COMPA_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER1_COMPB_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER1_OVF_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER0_COMPA_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER0_COMPB_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TIMER0_OVF_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(SPI_STC_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(USART_RX_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(USART_UDRE_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(USART_TX_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(ADC_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(EE_READY_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(ANALOG_COMP_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(TWI_data)
+    .word 0x0000
+    #endif
+    
+    #if defined(SPM_READY_data)
+    .word 0x0000
+    #endif
 
-    ldi ZL, lo8( isr_vector_table )
-    ldi ZH, hi8( isr_vector_table )
-
-    add ZL, r24
-    adc ZH, r1
-
-    st Z+, r22
-    st z, r23
-
-    ret
-
-/* Default isr */
-.global runtime_bad_isr
-runtime_bad_isr:
-    reti
+#if ENABLE_ISR_VECTOR_DATA_POINTER_TABLE_SIZE == 1
+.global isr_vector_data_pointer_table_size
+isr_vector_data_pointer_table_size:
+    #define data_pointer_table_lenght . - isr_vector_data_pointer_table
+    .byte data_pointer_table_lenght
+#endif
 
 /* Ensure our vector table is copied to memory */
 .global __do_copy_data
