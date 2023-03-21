@@ -52,9 +52,7 @@ int main()
     while (true){};
 }
 
-/* Example isr which doesn't enable interrupts */
-/* Since the dynamic vector will enable the interrupts */
-/* Also this prevents crashing, since TIMER1_COMPB vector would be theorically called on every clock tick */
+/* Example isr */
 __attribute__((naked)) void __vector_pin_blink()
 {
     __asm__ (
