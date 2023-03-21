@@ -57,10 +57,8 @@ int main()
     while (true){};
 }
 
-/* Example isr which doesn't enable interrupts */
-/* Since the dynamic vector will enable the interrupts */
-/* Also this prevents crashing, since TIMER1_COMPB vector would be theorically called on every clock tick */
-__attribute__((naked)) void __vector_pin_blink()
+/* Example isr */
+__attribute__((signal)) void __vector_pin_blink()
 {
   struct example_data *ptr = isr_vector_data_pointer_table[TIMER1_COMPB_];
 
