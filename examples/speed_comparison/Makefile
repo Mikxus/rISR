@@ -26,8 +26,8 @@ dynamic.c: $(BUILD_DIR)
 fast_dynamic.c: $(BUILD_DIR)
 	$(CC) -mmcu=$(BOARD) $(CFLAGS) $@  -include fast_dynamic_config.h ../../src/rISR.c ../../src/rISR.S -o $(BUILD_DIR)/fast_dynamic.o
 
-hard_coded: $(BUILD_DIR)
-	$(CC) -mmcu=$(BOARD) $(CFLAGS) $@ hard_coded.c -o $(BUILD_DIR)/hard_coded.o
+hard_coded.c: $(BUILD_DIR)
+	$(CC) -mmcu=$(BOARD) $(CFLAGS) $@ -o $(BUILD_DIR)/hard_coded.o
 
 $(BUILD_DIR):
 	@mkdir $(BUILD_DIR)
