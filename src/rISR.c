@@ -256,7 +256,7 @@ extern "C"
         unsafe_dynamic_isr( SPM_READY_vect, SPM_READY_ )
 #endif
 
-__attribute__ ((signal)) runtime_bad_isr( void )
+__attribute__ ((signal)) void runtime_bad_isr( void )
 {
     return;
 }
