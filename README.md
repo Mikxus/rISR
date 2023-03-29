@@ -1,4 +1,4 @@
-# rISR version 1.0.1
+# rISR version 1.0.2
 
 rISR (Runtime Interrupt Service Routine) is a C library that allows you to bind interrupt vectors at runtime on the atmega328p chip. It is designed to be easy to use and provides a simple API for binding and un-binding ISRs (Interrupt Service Routines) to interrupt vectors.
 
@@ -57,6 +57,10 @@ int main() {
     TCCR1B |= (1 << CS10);
     TIMSK1 |= (1 << OCIE1B;
 
+    /* Set pin PB4 to output */
+    /* Pin 12 dn arduino uno r3 */ 
+    DDRB = 0b00010000;                    
+
     /* Bind isr to selected interrupt vector */
     bind_isr(TIMER1_COMPB_, __vector_pin_blink);
     sei();
@@ -83,7 +87,7 @@ CFLAGS := -Wall --param=min-pagesize=0
 BOARD := atmega328p
 BUILD_DIR := build
 
-.phony: clean
+.PHONY: clean
 
 main.c: $(BUILD_DIR)
     $(CC) -mmcu=$(BOARD) $(CFLAGS) -include config.h path_to_rISR.c path_to_rISR.S -o $(BUILD_DIR)/main.o
