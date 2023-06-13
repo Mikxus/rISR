@@ -16,7 +16,7 @@ Before you can use the rISR library, you will need to have the following install
 
 Or if you prefer Arduino framework:
 
-- [Arduino ide](https://www.arduino.cc/en/software) / [Arduino cli](https://arduino.github.io/arduino-cli/0.29/installation/)
+- [Arduino ide](https://www.arduino.cc/en/software) / [Arduino cli](https://arduino.github.io/arduino-cli/latest/#installation)
 
 ### Installation
 - Clone the rISR repo
