@@ -1,4 +1,4 @@
-# rISR version 1.0.3
+# rISR version 1.0.4
 
 rISR (Runtime Interrupt Service Routine) is a C library that allows you to bind interrupt vectors at runtime on the atmega328p chip. It is designed to be easy to use and provides a simple API for binding and un-binding ISRs (Interrupt Service Routines) to interrupt vectors.
 
@@ -36,6 +36,7 @@ Or If you're using Arduino, you can also install the library by following these 
 ### Example project
 Next create new main.c or a sketch and copy over the example.
 ```C
+#include <stdbool.h>
 #include <rISR.h>
 
 __attribute__ ((signal)) void __vector_pin_blink()
@@ -55,7 +56,7 @@ int main() {
     OCR1A = 1;
     TCCR1B |= (1 << WGM12);
     TCCR1B |= (1 << CS10);
-    TIMSK1 |= (1 << OCIE1B;
+    TIMSK1 |= (1 << OCIE1B);
 
     /* Set pin PB4 to output */
     /* Pin 12 dn arduino uno r3 */ 
@@ -65,14 +66,14 @@ int main() {
     bind_isr(TIMER1_COMPB_, __vector_pin_blink);
     sei();
 
-    while (true){};
+    while (true){}
 }
 ```
 **Note** if you're using arduino. Change the ```int main()``` to ```void loop()```
 
 Then new create config.h file or edit rISR's config file. The config file should have the interrupt name uncommented to enable runtime binding for it.
 ```C
-#define TIMER1_COMPB_
+#define TIMER1_COMPB_used
 ```
 
 #### Compilation
@@ -90,7 +91,7 @@ BUILD_DIR := build
 .PHONY: clean
 
 main.c: $(BUILD_DIR)
-    $(CC) -mmcu=$(BOARD) $(CFLAGS) -include config.h path_to_rISR.c path_to_rISR.S -o $(BUILD_DIR)/main.o
+    $(CC) -mmcu=$(BOARD) $(CFLAGS) $@ -include config.h path_to_rISR.c path_to_rISR.S -o $(BUILD_DIR)/main.o
 
 $(BUILD_DIR):
     mkdir $(BUILD_DIR)
