@@ -1,4 +1,4 @@
-# 'make'        build executable file 'mycc'
+# 'make'        build
 # 'make clean'  removes build directory
 
 CC = avr-gcc
@@ -7,7 +7,7 @@ CC = avr-gcc
 # if avr-gcc version is < 12x
 # remove the --param=min-pagesize=0
 # https://gcc.gnu.org/bugzilla//show_bug.cgi?id=105523
-CFLAGS = -Wall -g -O3 --param=min-pagesize=0
+CFLAGS = -Wall -g -O3 --param=min-pagesize=0 -Wno-misspelled-isr
 BOARD = atmega328p
 ADDITIONAL_FILES = ../../src/rISR.S
 BUILD_DIR = build
