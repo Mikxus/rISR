@@ -50,7 +50,7 @@ int main()
 
     DDRB = 0b00010000;                     // Set pin to output
 
-    bind_isr_data_ptr(TIMER1_COMPB_, &data);
+    bind_isr_data_ptr(TIMER1_COMPB_ptr, &data);
     bind_isr(TIMER1_COMPB_, __vector_pin_blink);
     sei();
 
