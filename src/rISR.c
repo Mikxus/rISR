@@ -274,13 +274,13 @@ void unbind_isr( isr_vectors isr_name )
     return;
 }
 
-void bind_isr_data_ptr( isr_vectors isr_name, void *pointer )
+void bind_isr_data_ptr( isr_data_pointers isr_name, void *pointer )
 {
     isr_vector_data_pointer_table[ isr_name ] = pointer;
     return;
 }
 
-void unbind_isr_data_ptr( isr_vectors isr_name )
+void unbind_isr_data_ptr( isr_data_pointers isr_name )
 {
     isr_vector_data_pointer_table[ isr_name ] = NULL;
     return;
@@ -291,7 +291,7 @@ vector_t get_isr_vector( isr_vectors isr_name )
     return isr_vector_table[ isr_name ];
 }
 
-void *get_isr_data_ptr( isr_vectors isr_name )
+void *get_isr_data_ptr( isr_data_pointers isr_name )
 {
     return isr_vector_data_pointer_table[ isr_name ];
 }
