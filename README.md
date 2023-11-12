@@ -1,4 +1,4 @@
-# rISR version 1.0.6
+# rISR version 1.1.0
 
 rISR (Runtime Interrupt Service Routine) is a C library that allows you to bind interrupt vectors at runtime on the atmega328p chip. It is designed to be easy to use and provides a simple API for binding and un-binding ISRs (Interrupt Service Routines) to interrupt vectors.
 
@@ -117,15 +117,22 @@ Bind data pointer to interrupt vector.
 ```C
 void bind_isr_data_ptr(enum isr_vectors vector, void* pointer);
 ```
+### APIs for passing data pointers
+**Note** the vector names for data pointers end in a _ptr suffix.
+
+Example:
+```C
+TIMER1_COMPB_ptr
+```
 
 Unbind data pointer from a interrupt vector
 ```C
-void unbind_isr_data_otr(enum isr_vectors vector, void* pointer);
+void unbind_isr_data_otr(enum isr_data_pointers vector, void* pointer);
 ```
 
-Get binded data pointer
+Get binded data pointer  
 ```C
-void *get_isr_data_ptr(enum isr_vectors vector);
+void *get_isr_data_ptr(enum isr_data_pointers vector);
 ```
 
 ## License
