@@ -113,10 +113,7 @@ Un-bind an ISR from an interrupt vector.
 void unbind_isr(enum isr_vectors vector);
 ```
 
-Bind data pointer to interrupt vector.
-```C
-void bind_isr_data_ptr(enum isr_vectors vector, void* pointer);
-```
+
 ### APIs for passing data pointers
 **Note** the vector names for data pointers end in a _ptr suffix.
 
@@ -125,9 +122,14 @@ Example:
 TIMER1_COMPB_ptr
 ```
 
+Bind data pointer to interrupt vector.
+```C
+void bind_isr_data_ptr(enum isr_vectors vector, void* pointer);
+```
+
 Unbind data pointer from a interrupt vector
 ```C
-void unbind_isr_data_otr(enum isr_data_pointers vector, void* pointer);
+void unbind_isr_data_ptr(enum isr_data_pointers vector, void* pointer);
 ```
 
 Get binded data pointer  
